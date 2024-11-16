@@ -1,4 +1,5 @@
-data class DarkArts(val numberOfChapter: Int, val description: String, val name: String) {
+data class DarkArts(val numberOfChapter: Int, val description: String, val name: String, val target: String) {
+
     //default parameters
     val damage = 0
     val damageAll = 0

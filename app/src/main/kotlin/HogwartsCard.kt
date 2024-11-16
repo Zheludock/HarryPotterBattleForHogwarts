@@ -13,4 +13,7 @@ data class HogwartsCard(val name: String, val numberOfChapter: Int, val cardType
     val choise = false
     val discardEffect = false
     val anyTarget = false
+
+
 }
+
