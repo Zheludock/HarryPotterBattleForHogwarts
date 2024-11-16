@@ -1,36 +1,36 @@
-data class HogwartsCard(val name: String, val numberOfChapter: Int, val cardType: String, val cost: Int,
+data class HogwartsCard(val name: String, val numberOfChapter: Int, val cardType: String,
+                        val cost: Int,
                         val description: String,
-                        val target: String = "self",
-                        val ability: String = "giveMoney",
-                        val value: Int = 1
+                        val effects: MutableList<String>,
+                        val choised: Boolean = false,
+                        val discardEffect: Boolean = false,
+                        val passiveEffect: Boolean = false
 ) {
-    //default parameters
-    val choise = false
-    val discardEffect = false
 
 }
 
 fun playCard(card: HogwartsCard){
-    if(card.target == "lovation") {
-        if(card.ability == "removeBlackMark") Table.locations[0].currentBlackMark -= card.value
-    } else {
-        val tar = targets(card.target)
-        for(t in tar){
-            val ab = card.ability.split(", ").toTypedArray()
-            for (a in ab) {
-                when (a) {
-                    "giveMoney" -> t.money += card.value
-                    "giveHp" -> t.hp += card.value
-                    "giveCard" -> repeat(card.value) { draw(t.playerDeck, t.playerHand) }
-                    "giveLithning" -> t.lithning += card.value
-                }
-            }
-        }
+    for(effect in card.effects){
+        val args = effect.split(", ")
+        useEffect(args[0], args[1], args[2].toInt())
     }
 }
 
-val alohomora = HogwartsCard("Алохомора", 1, "Spell", 0, "Give 1 money")
-val trevor = choise(
-    mutableListOf( HogwartsCard("Тревор", 1, "ally", 0,
-    "Give 1 lithning or 2hp", target = "self", ability = "giveHp", 2), HogwartsCard("Тревор", 1, "ally", 0,
-        "Give 1 lithning or 2hp", target = "self", ability = "giveHp", 2)))
+val alohomora = HogwartsCard("Алохомора", 1,
+    "ipell", 0, "Получите 1 галлеон", mutableListOf("self, giveMoney, 1"))
+val trevor = HogwartsCard("Тревор", 1, "ally", 0,
+    "Получите 2 хп или 1 молнию",
+    mutableListOf("self, giveHp, 2", "self, giveLithning, 1",), true)
+val remembrall = HogwartsCard("Напоминалка", 1, "item", 0,
+    "Получите 1 монету, если сбросили - получите 2 монеты", mutableListOf("self, giveMoney, 1"),
+    discardEffect = true)
+val manragore = HogwartsCard("Корень мандрагоры", 1, "item", 0,
+    "Получите 1 молнию или дайте 2 хп любому волшебнику",
+    mutableListOf("self, giveLithning, 1", "choisePlayer, giveHp, 2"))
+val hedwig = HogwartsCard("Букля", 1, "ally", 0,
+    "Получите 1 молнию или 2 хп", mutableListOf("self, giveHp, 2", "self, giveLithning, 1"))
+val firebolt = HogwartsCard("Молния", 1,"item", 0,
+    "Получите 1 молнию, если победите врага - получите 1 монету", mutableListOf("self, giveLithning, 1"))
+val invisibleManty = HogwartsCard("Мантия-невидимка", 1, "item", 0,
+    "Получите 1 монету, вы не можете получить больше 1 урона от злодеев или событий темных искусств",
+    mutableListOf("self, giveMoney, 1"))
