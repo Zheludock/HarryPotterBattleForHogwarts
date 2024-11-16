@@ -1,6 +1,6 @@
 data class Enemy(val name: String, val description: String, val numberOfChapter: Int,
             val hpToDie: Int, val effectWhenDie: String) {
-    fun dieEffect(effectWhenDie: String){
+    fun dieEffect(){
         null
     }
     fun useAbility(){

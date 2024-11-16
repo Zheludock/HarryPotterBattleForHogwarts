@@ -20,7 +20,7 @@ object Table {
     var indexActivePlayer = numRound % players.size
     var activePlayer = players[indexActivePlayer]
     fun round(){
-        repeat(locations[0].numberOfDarkArts) {playIt(draw(deckDarkArts, darkArtsTrash))}
+        repeat(locations[0].numberOfDarkArts) {playDA()}
         for(enemy in activeEnemy){
             enemy.useAbility()
         }
@@ -28,9 +28,30 @@ object Table {
             println("choise action: ")
             val action = readln()
             when(action){
-                "attack" -> null
-                "use card" -> null
-                "buy card" -> null
+                "attack" -> if(activePlayer.lithning > 0) {
+                    val thisEnemy = choise(activeEnemy)[0]
+                    if(thisEnemy.currentLithning < thisEnemy.hpToDie){
+                        thisEnemy.currentLithning++
+                        activePlayer.lithning--
+                    }
+                    if(thisEnemy.currentLithning == thisEnemy.hpToDie){
+                        thisEnemy.dieEffect()
+                    }
+                } else println("you have no lithning")
+                "use card" -> {
+                    playCard(choise(activePlayer.playerHand)[0])
+                }
+                "buy card" -> {
+                    val buyingCard = choise(magazine)[0]
+                    if(activePlayer.money < buyingCard.cost){
+                        println("you have no money")
+                        continue
+                    }
+                    activePlayer.money -= buyingCard.cost
+                    activePlayer.playerTrash.add(buyingCard)
+                    magazine.remove(buyingCard)
+                }
+                "endRound" -> break
             }
             if(locations[0].currentBlackMark == locations[0].maxBlackMark){
                 if(locations.size > 1) {
