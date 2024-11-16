@@ -20,7 +20,10 @@ object Table {
     var indexActivePlayer = numRound % players.size
     var activePlayer = players[indexActivePlayer]
     fun round(){
-        repeat(locations[0].numberOfDarkArts) {playDA()}
+        repeat(locations[0].numberOfDarkArts) {
+            playDA()
+            draw(deckDarkArts, darkArtsTrash)
+        }
         for(enemy in activeEnemy){
             enemy.useAbility()
         }
@@ -36,6 +39,8 @@ object Table {
                     }
                     if(thisEnemy.currentLithning == thisEnemy.hpToDie){
                         thisEnemy.dieEffect()
+                        enemyTrash.add(thisEnemy)
+                        activeEnemy.remove(thisEnemy)
                     }
                 } else println("you have no lithning")
                 "use card" -> {
