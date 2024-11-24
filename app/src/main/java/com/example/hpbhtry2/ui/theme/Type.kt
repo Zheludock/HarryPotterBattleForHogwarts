@@ -1,4 +1,4 @@
-package com.example.harrypotterbattleforhogwarts.ui.theme
+package com.example.hpbhtry2.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
