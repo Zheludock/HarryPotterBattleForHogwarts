@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Column
+import androidx.compose.runtime.mutableIntStateOf
 import attack
 import buyCard
 import draw
@@ -45,26 +46,32 @@ class MainActivity : ComponentActivity() {
             Surface(
                 modifier = Modifier.fillMaxSize()
             ) {
+                val startTime = System.currentTimeMillis()
                 Table.deckDarkArts.shuffle()
                 Table.deckEnemy.shuffle()
                 Table.hogwartsDeck.shuffle()
-                while (Table.magazine.size < 6){
+                while (Table.magazine.size < 6) {
                     draw(Table.hogwartsDeck, Table.magazine)
                 }
-                while(Table.activeEnemy.size < Table.numberOfActiveEnemy){
+                while (Table.activeEnemy.size < Table.numberOfActiveEnemy) {
                     draw(Table.deckEnemy, Table.activeEnemy)
                 }
-                for(player in Table.players){
+                for (player in Table.players) {
                     player.playerDeck.shuffle()
-                    repeat(5){draw(player.playerDeck, player.playerHand)}
-                }
-                while (true) {
-                    Table.round()
+                    repeat(5) { draw(player.playerDeck, player.playerHand) }
                 }
                 GameScreen()
+                val endTime = System.currentTimeMillis()
+                val elapsedTime = endTime - startTime
+
+                println("Время выполнения операции: $elapsedTime ms")
+                while (Table.activeEnemy.isNotEmpty() and Table.deckEnemy.isNotEmpty()) {
+                    Table.round()
+                }
             }
         }
     }
+}
     @Composable
     fun GameScreen() {
         val players = remember { Table.players }
@@ -73,12 +80,12 @@ class MainActivity : ComponentActivity() {
 
         val magazine = remember { Table.magazine }
 
-        var blackMarks by remember { mutableStateOf(Table.locations[0].currentBlackMark) }
-        //var activeShopCards by remember { mutableStateOf(shopCards) }
+        var blackMarks by remember { mutableIntStateOf(Table.locations[0].currentBlackMark) }
+        //var activeShopCards by remember { mutableStateOf(Table.magazine) }
 
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             // Счетчик меток
-            Text("Черные метки: ${blackMarks}", style = MaterialTheme.typography.titleLarge)
+            Text("Черные метки: $blackMarks", style = MaterialTheme.typography.titleLarge)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -267,4 +274,3 @@ class MainActivity : ComponentActivity() {
     fun SimpleComposablePreview() {
         GameScreen()
     }
-}

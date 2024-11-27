@@ -27,7 +27,7 @@ fun playCard(card: HogwartsCard){
     if(card.enemyDieObserver){
         Table.enemyDieObs.add(card)
     }
-    if(Table.activePlayer.equals(ron) && card.cardType.equals("ally")){
+    if(Table.activePlayer == ron && card.cardType == "ally"){
         Table.allyPlayed++
     }
     if (card.canOnTop != null) {
@@ -53,7 +53,7 @@ val alohomora = HogwartsCard("Алохомора", 1,
     "spell", 0, "Получите 1 галлеон", mutableListOf("self, giveMoney, 1"))
 val trevor = HogwartsCard("Тревор", 1, "ally", 0,
     "Получите 2 хп или 1 молнию",
-    mutableListOf("self, giveHp, 2", "self, giveLithning, 1",), true)
+    mutableListOf("self, giveHp, 2", "self, giveLithning, 1"), true)
 val remembrall = HogwartsCard("Напоминалка", 1, "item", 0,
     "Получите 1 монету, если сбросили - получите 2 монеты", mutableListOf("self, giveMoney, 1"),
     discardEffect = true, discardedEffect = mutableListOf("self, giveMonney, 2"))

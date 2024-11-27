@@ -70,7 +70,7 @@ fun useEffect(target: String, ability: String, value: Int)
                     }
                     "giveLithning" -> t.lithning += value
                     "looseHp" -> {
-                        if(t.equals(harry) && t.playerHand.contains(invisibleManty)) {
+                        if(t == harry && t.playerHand.contains(invisibleManty)) {
                             if(!t.isKo) {
                                 t.hp = max(t.hp - 1, 0)
                                 if (t.hp == 0) t.ko()

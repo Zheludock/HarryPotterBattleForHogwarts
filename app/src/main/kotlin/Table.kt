@@ -40,14 +40,12 @@ object Table {
         for(enemy in activeEnemy){
             enemy.useAbility()
         }
-        while(endRound == false){
-
-        }
+        while(!endRound){}
         if(locations[0].currentBlackMark == locations[0].maxBlackMark){
             if(locations.size > 1) {
                 locations.removeAt(0)
             }
-            else return println("Game Over")
+            else return
         }
         while(activeEnemy.size < numberOfActiveEnemy && deckEnemy.isNotEmpty()) {
             draw(deckEnemy, activeEnemy)
@@ -67,14 +65,13 @@ object Table {
             activePlayer.hp = 10
             activePlayer.isKo = false
         }
-        if(activeEnemy.isEmpty()) return println("Victory!")
+        if(activeEnemy.isEmpty()) return
         banForDraw = false
         banForHeal = false
         harryMark = true
         canOnTopType = null
         allyPlayed = 0
         numRound++
+        enemyDieObs.clear()
     }
-
-
 }
